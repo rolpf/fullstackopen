@@ -6,16 +6,17 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
-    const nameObject = {
+
+    if (persons.some((persons) => persons.name === inputString)) {
+      alert(`${inputString} existe deja`);
+      return;
+    }
+    const newPerson = {
       name: inputString,
     };
 
-    if (persons.some((persons) => persons.name === inputString)) {
-      console.log(persons, "existe deja");
-    } else {
-      setPerson((previous) => [...previous, nameObject]);
-      setinputString("");
-    }
+    setPerson((previous) => [...previous, newPerson]);
+    setinputString("");
   };
 
   const handleNameChange = (event) => {
