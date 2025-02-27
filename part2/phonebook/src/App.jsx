@@ -1,22 +1,25 @@
 import { useState } from "react";
 
 const App = () => {
-  const [names, setNames] = useState([{ name: "Arto Hellas" }]);
-  const [newName, setNewName] = useState("");
+  const [persons, setPerson] = useState([{ name: "Arto Hellas" }]);
+  const [inputString, setinputString] = useState("");
 
   const addName = (event) => {
     event.preventDefault();
-    console.log("button clibked", event.target);
     const nameObject = {
-      name: newName,
+      name: inputString,
     };
 
-    setNames(names.concat(nameObject));
-    setNewName("");
+    if (persons.some((persons) => persons.name === inputString)) {
+      console.log(persons, "existe deja");
+    } else {
+      setPerson((previous) => [...previous, nameObject]);
+      setinputString("");
+    }
   };
 
   const handleNameChange = (event) => {
-    setNewName(event.target.value);
+    setinputString(event.target.value);
   };
 
   return (
@@ -24,7 +27,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
         <div>
-          name: <input value={newName} onChange={handleNameChange} />
+          name: <input value={inputString} onChange={handleNameChange} />
         </div>
         <div>
           <button type="submit">add</button>
