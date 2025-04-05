@@ -1,10 +1,13 @@
 import { useState } from "react";
-import DisplayPersons from "./components/DisplayPersons.jsx";
+import Persons from "./components/Persons.jsx";
+import Search from "./components/Search.jsx";
 
 const App = () => {
   const [persons, setPerson] = useState([]);
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredItems, setFilteredItems] = useState(persons);
 
   const addName = (event) => {
     event.preventDefault();
@@ -34,10 +37,22 @@ const App = () => {
   const handlePhoneChange = (event) => {
     setPhoneInput(event.target.value);
   };
+  const handleSearchChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    const filteredList = persons.filter((person) =>
+      person.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredItems(filteredList);
+  };
+  console.log(filteredItems);
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <h2>Search</h2>
+      search: <input value={searchQuery} onChange={handleSearchChange}></input>
+      <h2>Add new</h2>
       <form onSubmit={addName}>
         <div>
           name: <input value={nameInput} onChange={handleNameChange} />
@@ -48,7 +63,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <DisplayPersons persons={persons} />
+      <Persons persons={filteredItems} />
     </div>
   );
 };

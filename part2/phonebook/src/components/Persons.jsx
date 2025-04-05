@@ -1,4 +1,4 @@
-const DisplayPersons = ({ persons }) => {
+const Persons = ({ persons }) => {
   return (
     <>
       <ul>
@@ -12,4 +12,4 @@ const DisplayPersons = ({ persons }) => {
   );
 };
 
-export default DisplayPersons;
+export default Persons;
