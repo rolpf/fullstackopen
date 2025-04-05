@@ -3,11 +3,18 @@ import Persons from "./components/Persons.jsx";
 import Search from "./components/Search.jsx";
 
 const App = () => {
-  const [persons, setPerson] = useState([]);
+  const [persons, setPerson] = useState([
+    { name: "Arto Hellas", phone: "040-123456", id: 1 },
+    { name: "Ada Lovelace", phone: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+  ]);
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredItems, setFilteredItems] = useState(persons);
+  const filteredPersons = persons.filter((person) =>
+    person.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const addName = (event) => {
     event.preventDefault();
@@ -37,25 +44,22 @@ const App = () => {
   const handlePhoneChange = (event) => {
     setPhoneInput(event.target.value);
   };
-  const handleSearchChange = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    const filteredList = persons.filter((person) =>
-      person.name.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredItems(filteredList);
-  };
-  console.log(filteredItems);
+
+  console.log(filteredPersons);
 
   return (
     <div>
       <h1>Phonebook</h1>
-      <h2>Search</h2>
-      search: <input value={searchQuery} onChange={handleSearchChange}></input>
+      <Search
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        persons={persons}
+      />
       <h2>Add new</h2>
       <form onSubmit={addName}>
         <div>
-          name: <input value={nameInput} onChange={handleNameChange} />
+          name:{" "}
+          <input type="text" value={nameInput} onChange={handleNameChange} />
           phone: <input value={phoneInput} onChange={handlePhoneChange} />
         </div>
         <div>
@@ -63,7 +67,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Persons persons={filteredItems} />
+      <Persons persons={filteredPersons} />
     </div>
   );
 };
