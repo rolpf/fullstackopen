@@ -1,26 +1,38 @@
 import { useState } from "react";
+import DisplayPersons from "./components/DisplayPersons.jsx";
 
 const App = () => {
-  const [persons, setPerson] = useState([{ name: "Arto Hellas" }]);
-  const [inputString, setinputString] = useState("");
+  const [persons, setPerson] = useState([]);
+  const [nameInput, setNameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
 
   const addName = (event) => {
     event.preventDefault();
 
-    if (persons.some((persons) => persons.name === inputString)) {
-      alert(`${inputString} existe deja`);
+    if (
+      persons.some(
+        (persons) => persons.name === nameInput || persons.phone === phoneInput
+      )
+    ) {
+      alert(`${nameInput} existe deja`);
       return;
     }
     const newPerson = {
-      name: inputString,
+      name: nameInput,
+      phone: phoneInput,
     };
 
     setPerson((previous) => [...previous, newPerson]);
-    setinputString("");
+    setNameInput("");
+    setPhoneInput("");
   };
 
   const handleNameChange = (event) => {
-    setinputString(event.target.value);
+    setNameInput(event.target.value);
+  };
+
+  const handlePhoneChange = (event) => {
+    setPhoneInput(event.target.value);
   };
 
   return (
@@ -28,14 +40,15 @@ const App = () => {
       <h2>Phonebook</h2>
       <form onSubmit={addName}>
         <div>
-          name: <input value={inputString} onChange={handleNameChange} />
+          name: <input value={nameInput} onChange={handleNameChange} />
+          phone: <input value={phoneInput} onChange={handlePhoneChange} />
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      ...
+      <DisplayPersons persons={persons} />
     </div>
   );
 };
