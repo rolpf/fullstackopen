@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Form from "./components/Form.jsx";
 import Persons from "./components/Persons.jsx";
 import Search from "./components/Search.jsx";
 
@@ -6,8 +7,8 @@ const App = () => {
   const [persons, setPerson] = useState([
     { name: "Arto Hellas", phone: "040-123456", id: 1 },
     { name: "Ada Lovelace", phone: "39-44-5323523", id: 2 },
-    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
-    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+    { name: "Dan Abramov", phone: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", phone: "39-23-6423122", id: 4 },
   ]);
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
@@ -56,16 +57,13 @@ const App = () => {
         persons={persons}
       />
       <h2>Add new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name:{" "}
-          <input type="text" value={nameInput} onChange={handleNameChange} />
-          phone: <input value={phoneInput} onChange={handlePhoneChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Form
+        addName={addName}
+        nameInput={nameInput}
+        phoneInput={phoneInput}
+        handleNameChange={handleNameChange}
+        handlePhoneChange={handlePhoneChange}
+      />
       <h2>Numbers</h2>
       <Persons persons={filteredPersons} />
     </div>

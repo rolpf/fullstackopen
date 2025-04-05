@@ -1,7 +1,7 @@
-const Input = ({ value, handleChange }) => {
+const Input = ({ type, value, handleChange }) => {
   return (
     <>
-      <input value={value} onChange={handleChange} />
+      <input type={type} value={value} onChange={handleChange} />
     </>
   );
 };
