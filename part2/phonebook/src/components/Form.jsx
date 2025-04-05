@@ -11,7 +11,12 @@ const Form = ({
         <div>
           name:{" "}
           <input type="text" value={nameInput} onChange={handleNameChange} />
-          phone: <input value={phoneInput} onChange={handlePhoneChange} />
+          phone:{" "}
+          <input
+            type="number"
+            value={phoneInput}
+            onChange={handlePhoneChange}
+          />
         </div>
         <div>
           <button type="submit">add</button>
