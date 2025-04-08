@@ -2,7 +2,7 @@ const Search = ({ searchQuery, setSearchQuery, persons }) => {
   return (
     <>
       <h2>Search</h2>
-      search:{" "}
+      <label>search:</label>
       <input
         type="text"
         value={searchQuery}
