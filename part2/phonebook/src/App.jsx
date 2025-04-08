@@ -56,8 +56,6 @@ const App = () => {
 
   const removePerson = (id) => {
     const filteredPerson = persons.filter((person) => person.id === id);
-    console.log(filteredPerson);
-    console.log(id);
     const personName = filteredPerson[0].name;
     const personId = filteredPerson[0].id;
     if (window.confirm(`Supprimer ${personName} ?`)) {
