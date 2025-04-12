@@ -20,7 +20,7 @@ const App = () => {
     personsService.getAll().then((response) => {
       setPerson(response.data);
     });
-  });
+  }, []);
 
   const addName = (event) => {
     event.preventDefault();
