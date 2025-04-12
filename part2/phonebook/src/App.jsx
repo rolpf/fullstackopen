@@ -12,7 +12,6 @@ const App = () => {
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((response) => {
@@ -23,12 +22,26 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault();
 
+    const person = filteredPersons.filter(
+      (person) => person.name === nameInput
+    );
+
+    const personToAdd = person[0];
+    const updatedPerson = { ...personToAdd, number: phoneInput };
+
     if (
       persons.some(
         (persons) => persons.name === nameInput || persons.phone === phoneInput
       )
     ) {
-      alert(`${nameInput} existe deja`);
+      if (
+        window.confirm(
+          `${nameInput} est déjà présent. Changer le numéro de téléphone de ${nameInput} ?`
+        )
+      ) {
+        console.log(updatedPerson.id);
+        personsService.updatePhone(updatedPerson.id, phoneInput);
+      }
       return;
     }
     const newPerson = {
@@ -61,11 +74,7 @@ const App = () => {
     if (window.confirm(`Supprimer ${personName} ?`)) {
       personsService.remove(personId);
       console.log(`${personName} successfully deleted`);
-      setMessage(`${personName} was successfully deleted`);
       setPerson(persons.filter((person) => person.id !== personId));
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
     }
   };
 
