@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import Form from "./components/Form.jsx";
+import Notification from "./components/Notification.jsx";
 import Persons from "./components/Persons.jsx";
 import Search from "./components/Search.jsx";
 import personsService from "./services/persons.js";
+import "./index.css";
 
 const App = () => {
   const [persons, setPerson] = useState([]);
@@ -12,6 +14,7 @@ const App = () => {
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((response) => {
@@ -52,6 +55,10 @@ const App = () => {
     personsService.create(newPerson).then((response) => {
       setPerson(persons.concat(response.data));
       setPerson("");
+      setMessage(`${newPerson.name} was successfully added to the phonebook`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
     });
 
     setPerson((previous) => [...previous, newPerson]);
@@ -74,6 +81,10 @@ const App = () => {
     if (window.confirm(`Supprimer ${personName} ?`)) {
       personsService.remove(personId);
       console.log(`${personName} successfully deleted`);
+      setMessage(`${personName} was successfully deleted`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
       setPerson(persons.filter((person) => person.id !== personId));
     }
   };
@@ -94,6 +105,7 @@ const App = () => {
         handleNameChange={handleNameChange}
         handlePhoneChange={handlePhoneChange}
       />
+      <Notification message={message} />
       <h2>Numbers</h2>
       <Persons persons={filteredPersons} removePerson={removePerson} />
     </div>
