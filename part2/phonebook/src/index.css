@@ -1,0 +1,17 @@
+.notification {
+  color: green;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 4px 0px;
+}
+
+.validate {
+  color: green;
+}
+
+.error {
+  color: red;
+}
