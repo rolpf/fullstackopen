@@ -10,7 +10,10 @@ const Results = ({ countries, setCountries }) => {
     return (
       <ul>
         {countries.map((country, i) => (
-          <li key={i}>{country.name.common}</li>
+          <li key={i}>
+            {country.name.common}
+            <button onClick={() => setCountries([country])}>show</button>
+          </li>
         ))}
       </ul>
     );

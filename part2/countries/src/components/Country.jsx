@@ -1,5 +1,4 @@
 const Country = ({ country }) => {
-  const flagPng = country.flags.png;
   console.log(country);
   return (
     <>
