@@ -14,13 +14,16 @@ const App = () => {
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    personsService.getAll().then((response) => {
-      setPerson(response.data);
-    });
-  }, []);
+    if (persons) {
+      personsService.getAll().then((response) => {
+        setPerson(response.data);
+      });
+    }
+  }, [persons]);
 
   const addName = (event) => {
     event.preventDefault();
