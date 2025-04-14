@@ -31,8 +31,12 @@ const App = () => {
   return (
     <>
       <h1>Countries</h1>
-      <Filter searchFilter={searchFilter} onChange={handleFilterChange} />
-      <Results countries={countries} setCountries={setCountries} />
+      <Filter searchFilter={searchFilter} setSearchFilter={setSearchFilter} />
+      <Results
+        countries={filteredCountries}
+        setCountries={setCountries}
+        setSearchFilter={setSearchFilter}
+      />
     </>
   );
 };
