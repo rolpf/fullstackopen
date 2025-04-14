@@ -1,8 +1,12 @@
-const Filter = ({ searchFilter, onChange }) => {
+const Filter = ({ searchFilter, setSearchFilter }) => {
   return (
     <>
       <label>find countries:</label>
-      <input type="text" value={searchFilter} onChange={onChange}></input>
+      <input
+        type="text"
+        value={searchFilter}
+        onChange={(e) => setSearchFilter(e.target.value)}
+      ></input>
     </>
   );
 };
