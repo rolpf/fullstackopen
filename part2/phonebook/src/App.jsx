@@ -11,16 +11,21 @@ const App = () => {
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredPersons = persons.filter((person) =>
-    person.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredPersons = persons
+    ? persons.filter((person) =>
+        person.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
-    personsService.getAll().then((response) => {
-      setPerson(response.data);
-    });
-  }, []);
+    if (persons) {
+      personsService.getAll().then((response) => {
+        setPerson(response.data);
+      });
+    }
+  }, [persons]);
 
   const addName = (event) => {
     event.preventDefault();
@@ -75,6 +80,7 @@ const App = () => {
   };
 
   const removePerson = (id) => {
+    if (!persons) return;
     const filteredPerson = persons.filter((person) => person.id === id);
     const personName = filteredPerson[0].name;
     const personId = filteredPerson[0].id;
