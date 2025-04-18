@@ -1,9 +1,16 @@
 import express, { json } from "express";
 import bodyParser from "body-parser";
+import morgan from "morgan";
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+morgan.token("request-body", (req) => JSON.stringify(req.body));
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :request-body"
+  )
+);
 
 let persons = [
   {
