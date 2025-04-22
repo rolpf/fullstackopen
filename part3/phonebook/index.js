@@ -83,6 +83,7 @@ app.post("/api/persons", function (request, response) {
     response.status(409).json({
       error: "name must be unique",
     });
+    return;
   }
 
   persons = persons.concat(person);
