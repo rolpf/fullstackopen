@@ -1,8 +1,9 @@
 import express, { json } from "express";
-import bodyParser from "body-parser";
 import morgan from "morgan";
 const app = express();
+import cors from "cors";
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 morgan.token("request-body", (req) => JSON.stringify(req.body));
@@ -67,23 +68,24 @@ const generateId = (max) => {
 
 app.post("/api/persons", function (request, response) {
   const body = request.body;
+  console.log(body);
 
-  if (!body.name || !body.number) {
-    return response.status(400).json({
-      error: "name or number missing",
-    });
-  }
   const person = {
     name: body.name,
     number: body.number,
     id: generateId(1000),
   };
 
+  if (!body.name || !body.number) {
+    return response.status(400).json({
+      error: "name or number missing",
+    });
+  }
+
   if (persons.some((persons) => persons.name === body.name)) {
-    response.status(409).json({
+    return response.status(409).json({
       error: "name must be unique",
     });
-    return;
   }
 
   persons = persons.concat(person);
