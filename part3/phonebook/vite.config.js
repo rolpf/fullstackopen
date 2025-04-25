@@ -8,6 +8,6 @@ export default defineConfig({
     host: true,
     strictPort: true,
     port: 3001,
-    "server.allowedHosts": true,
+    allowedHosts: true,
   },
 });
