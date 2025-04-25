@@ -8,5 +8,6 @@ export default defineConfig({
     host: true,
     strictPort: true,
     port: 3001,
+    "server.allowedHosts": "fullstackopen-part3-xqd3.onrender.com",
   },
 });
