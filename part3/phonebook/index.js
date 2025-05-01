@@ -1,3 +1,4 @@
+import { init } from "@paralleldrive/cuid2";
 import express, { json } from "express";
 import morgan from "morgan";
 const app = express();
@@ -14,28 +15,7 @@ app.use(
   )
 );
 
-let persons = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    phone: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    phone: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    phone: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    phone: "39-23-6423122",
-  },
-];
+let persons = [];
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -63,6 +43,8 @@ app.get("/info", (request, response) => {
 });
 
 const generateId = (max) => {
+  // const length = 10;
+  // const cuid = init({ length });
   const randomId = Math.floor(Math.random() * max);
   return randomId;
 };

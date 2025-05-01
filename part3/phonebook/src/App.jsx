@@ -7,7 +7,7 @@ import personsService from "./services/persons.js";
 import "./index.css";
 
 const App = () => {
-  const [persons, setPerson] = useState([]);
+  const [persons, setPersons] = useState([]);
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,16 +18,12 @@ const App = () => {
     : [];
 
   const [message, setMessage] = useState(null);
-  const [flag, setFlag] = useState(true);
 
   useEffect(() => {
-    if (flag) {
-      personsService.getAll().then((response) => {
-        setPerson(response.data);
-      });
-      setFlag(false);
-    }
-  }, [flag]);
+    personsService.getAll().then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const addName = (event) => {
     event.preventDefault();
@@ -37,7 +33,7 @@ const App = () => {
     );
 
     const personToAdd = person[0];
-    const updatedPerson = { ...personToAdd, number: phoneInput };
+    const updatedPerson = { ...personToAdd, phone: phoneInput };
 
     if (
       persons.some(
@@ -60,15 +56,16 @@ const App = () => {
     };
 
     personsService.create(newPerson).then((response) => {
-      setPerson(persons.concat(response.data));
-      setPerson("");
+      setPersons(persons.concat(response.data));
+      console.log(persons);
+      setPersons([]);
       setMessage(`${newPerson.name} was successfully added to the phonebook`);
       setTimeout(() => {
         setMessage(null);
       }, 5000);
     });
 
-    setPerson((previous) => [...previous, newPerson]);
+    setPersons((previous) => [...previous, newPerson]);
     setNameInput("");
     setPhoneInput("");
   };
@@ -93,7 +90,7 @@ const App = () => {
       setTimeout(() => {
         setMessage(null);
       }, 5000);
-      setPerson(persons.filter((person) => person.id !== personId));
+      setPersons(persons.filter((person) => person.id !== personId));
     }
   };
 
