@@ -51,7 +51,6 @@ const generateId = (max) => {
 
 app.post("/api/persons", function (request, response) {
   const body = request.body;
-  console.log(body);
 
   const person = {
     name: body.name,
@@ -72,12 +71,11 @@ app.post("/api/persons", function (request, response) {
   }
 
   persons = persons.concat(person);
-  console.log(person);
   response.json(person);
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
+  const id = parseInt(request.params.id);
   persons = persons.filter((person) => person.id !== id);
   response.status(204).end();
 });

@@ -7,7 +7,9 @@ const getAll = () => {
 
 const create = (newPerson) => {
   const request = axios.post(baseUrl, newPerson);
-  return request.then((response) => response.data);
+  return request.then((response) => {
+    return response.data;
+  });
 };
 
 const updatePhone = (id, phoneInput) => {

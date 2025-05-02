@@ -11,12 +11,6 @@ const App = () => {
   const [nameInput, setNameInput] = useState("");
   const [phoneInput, setPhoneInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredPersons = persons
-    ? persons.filter((person) =>
-        person.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
-
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -25,15 +19,14 @@ const App = () => {
     });
   }, []);
 
+  const filteredPersons = persons
+    ? persons.filter((person) =>
+        person.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
+
   const addName = (event) => {
     event.preventDefault();
-
-    const person = filteredPersons.filter(
-      (person) => person.name === nameInput
-    );
-
-    const personToAdd = person[0];
-    const updatedPerson = { ...personToAdd, phone: phoneInput };
 
     if (
       persons.some(
@@ -45,27 +38,34 @@ const App = () => {
           `${nameInput} est déjà présent. Changer le numéro de téléphone de ${nameInput} ?`
         )
       ) {
-        console.log(updatedPerson.id);
-        personsService.updatePhone(updatedPerson.id, phoneInput);
+        const person = persons.find((person) => person.name === nameInput);
+        const updatedPerson = { ...person, phone: phoneInput };
+
+        personsService
+          .updatePhone(updatedPerson.id, phoneInput)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            );
+          });
       }
-      return;
+    } else {
+      const newPerson = {
+        name: nameInput,
+        phone: phoneInput,
+      };
+      personsService.create(newPerson).then((response) => {
+        setPersons(persons.concat(response));
+        setMessage(`${newPerson.name} was successfully added to the phonebook`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+      });
     }
-    const newPerson = {
-      name: nameInput,
-      phone: phoneInput,
-    };
 
-    personsService.create(newPerson).then((response) => {
-      setPersons(persons.concat(response.data));
-      console.log(persons);
-      setPersons([]);
-      setMessage(`${newPerson.name} was successfully added to the phonebook`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-    });
-
-    setPersons((previous) => [...previous, newPerson]);
+    //setPersons((previous) => [...previous, newPerson]);
     setNameInput("");
     setPhoneInput("");
   };
