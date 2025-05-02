@@ -64,7 +64,6 @@ const App = () => {
         }, 5000);
       });
     }
-
     //setPersons((previous) => [...previous, newPerson]);
     setNameInput("");
     setPhoneInput("");
