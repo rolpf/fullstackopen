@@ -15,28 +15,18 @@ app.use(
   )
 );
 
-let persons = [];
-
-// app.get("/", (request, response) => {
-//   response.send("<h1>Hello World!</h1>");
-// });
-
 app.get("/api/persons", (request, response) => {
   Person.find().then((person) => {
     response.json(person);
   });
 });
 
-app.get("/api/persons/:id", (request, response) => {
-  Person.findById(request.params.id).then((person) => {
-    response.json(person);
+app.get("/api/info", (request, response) => {
+  Person.countDocuments({}).then((count) => {
+    const info = "Phonebook has info for " + count + " people";
+    const date = new Date();
+    response.json(info + date);
   });
-});
-
-app.get("/info", (request, response) => {
-  const info = "Phonebook has info for " + persons.length + " people";
-  const date = new Date();
-  response.json(info + date);
 });
 
 app.post("/api/persons", function (request, response) {
@@ -53,15 +43,22 @@ app.post("/api/persons", function (request, response) {
     });
   }
 
-  if (persons.some((persons) => persons.name === body.name)) {
-    return response.status(409).json({
-      error: "name must be unique",
-    });
-  }
+  Person.countDocuments({ name: body.name }).then((count) => {
+    if (count > 0) {
+      return response.status(409).json({
+        error: "name must be unique",
+      });
+    } else {
+      person.save().then((savedPerson) => {
+        response.json(savedPerson);
+      });
+    }
+  });
+});
 
-  person.save().then((savedPerson) => {
-    console.log(response.json(savedPerson));
-    response.json(savedPerson);
+app.get("/api/persons/:id", (request, response) => {
+  Person.findById(request.params.id).then((person) => {
+    response.json(person);
   });
 });
 
