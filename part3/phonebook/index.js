@@ -1,8 +1,8 @@
-import { init } from "@paralleldrive/cuid2";
 import express, { json } from "express";
 import morgan from "morgan";
 const app = express();
 import cors from "cors";
+import Person from "./src/models/person.js";
 
 app.use(cors());
 app.use(express.static("dist"));
@@ -22,18 +22,15 @@ let persons = [];
 // });
 
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
+  Person.find().then((person) => {
+    response.json(person);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
+  Person.findById(request.params.id).then((person) => {
     response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  });
 });
 
 app.get("/info", (request, response) => {
@@ -42,21 +39,13 @@ app.get("/info", (request, response) => {
   response.json(info + date);
 });
 
-const generateId = (max) => {
-  // const length = 10;
-  // const cuid = init({ length });
-  const randomId = Math.floor(Math.random() * max);
-  return randomId;
-};
-
 app.post("/api/persons", function (request, response) {
   const body = request.body;
 
-  const person = {
+  const person = new Person({
     name: body.name,
     phone: body.phone,
-    id: generateId(1000),
-  };
+  });
 
   if (!body.name || !body.phone) {
     return response.status(400).json({
@@ -70,14 +59,17 @@ app.post("/api/persons", function (request, response) {
     });
   }
 
-  persons = persons.concat(person);
-  response.json(person);
+  person.save().then((savedPerson) => {
+    console.log(response.json(savedPerson));
+    response.json(savedPerson);
+  });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = parseInt(request.params.id);
-  persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
+  Person.deleteOne({ _id: request.params.id }).then((person) => {
+    response.json(person);
+    response.status(204).end();
+  });
 });
 
 const PORT = process.env.PORT || 3001;
