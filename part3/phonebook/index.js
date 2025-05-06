@@ -1,8 +1,8 @@
-import { init } from "@paralleldrive/cuid2";
 import express, { json } from "express";
 import morgan from "morgan";
 const app = express();
 import cors from "cors";
+import Person from "./src/models/person.js";
 
 app.use(cors());
 app.use(express.static("dist"));
@@ -15,70 +15,101 @@ app.use(
   )
 );
 
-let persons = [];
-
-// app.get("/", (request, response) => {
-//   response.send("<h1>Hello World!</h1>");
-// });
-
 app.get("/api/persons", (request, response) => {
-  response.json(persons);
-});
-
-app.get("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
+  Person.find().then((person) => {
     response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  });
 });
 
-app.get("/info", (request, response) => {
-  const info = "Phonebook has info for " + persons.length + " people";
-  const date = new Date();
-  response.json(info + date);
+app.get("/api/info", (request, response) => {
+  Person.countDocuments({}).then((count) => {
+    const info = "Phonebook has info for " + count + " people";
+    const date = new Date();
+    response.json(info + date);
+  });
 });
 
-const generateId = (max) => {
-  // const length = 10;
-  // const cuid = init({ length });
-  const randomId = Math.floor(Math.random() * max);
-  return randomId;
-};
-
-app.post("/api/persons", function (request, response) {
+app.post("/api/persons", function (request, response, next) {
   const body = request.body;
 
-  const person = {
+  const person = new Person({
     name: body.name,
     phone: body.phone,
-    id: generateId(1000),
-  };
+  });
 
-  if (!body.name || !body.phone) {
-    return response.status(400).json({
-      error: "name or phone missing",
-    });
-  }
+  Person.countDocuments({ name: body.name }).then((count) => {
+    if (count > 0) {
+      return response.status(409).json({
+        error: "name must be unique",
+      });
+    } else {
+      person
+        .save()
+        .then((savedPerson) => {
+          response.json(savedPerson);
+        })
+        .catch((error) => next(error));
+    }
+  });
+});
 
-  if (persons.some((persons) => persons.name === body.name)) {
-    return response.status(409).json({
-      error: "name must be unique",
-    });
-  }
+app.get("/api/persons/:id", (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
+});
 
-  persons = persons.concat(person);
-  response.json(person);
+app.patch("/api/persons/:id", (request, response, next) => {
+  const { phone } = request.body;
+
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (!person) {
+        return response.status(404).end();
+      }
+
+      person.phone = phone;
+
+      return person.save().then((updatedPerson) => {
+        response.json(updatedPerson);
+      });
+    })
+    .catch((error) => next(error));
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = parseInt(request.params.id);
-  persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
+  Person.findByIdAndDelete(request.params.id)
+    .then((result) => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+
+    next(error);
+  }
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, "0.0.0.0", () => {

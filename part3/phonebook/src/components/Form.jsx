@@ -11,7 +11,7 @@ const Form = ({
         <label>name:</label>
         <input type="text" value={nameInput} onChange={handleNameChange} />
         <label>phone:</label>
-        <input type="number" value={phoneInput} onChange={handlePhoneChange} />
+        <input type="tel" value={phoneInput} onChange={handlePhoneChange} />
       </div>
       <div>
         <button type="submit">add</button>

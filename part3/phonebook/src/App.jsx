@@ -49,6 +49,12 @@ const App = () => {
                 person.id !== returnedPerson.id ? person : returnedPerson
               )
             );
+          })
+          .catch((error) => {
+            setMessage(error.response.data.error);
+            setTimeout(() => {
+              setMessage(null);
+            }, 5000);
           });
       }
     } else {
@@ -56,13 +62,24 @@ const App = () => {
         name: nameInput,
         phone: phoneInput,
       };
-      personsService.create(newPerson).then((response) => {
-        setPersons(persons.concat(response));
-        setMessage(`${newPerson.name} was successfully added to the phonebook`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      });
+      personsService
+        .create(newPerson)
+        .then((response) => {
+          setPersons(persons.concat(response));
+          setMessage(
+            `${newPerson.name} was successfully added to the phonebook`
+          );
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
+        });
     }
     //setPersons((previous) => [...previous, newPerson]);
     setNameInput("");
