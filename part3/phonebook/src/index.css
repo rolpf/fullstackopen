@@ -1,17 +1,36 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+15&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-jersey: "Jersey 15", "sans-serif";
+
+  --color-avocado-900: #344e41;
+  --color-avocado-700: #3a5a40;
+  --color-avocado-500: #588157;
+  --color-avocado-300: #a3b18a;
+  --color-avocado-100: #dad7cd;
+}
+
+body {
+  @apply font-jersey bg-avocado-900 text-avocado-100;
+}
+
+h1 {
+  @apply text-6xl;
+}
+
+h2 {
+  @apply text-4xl;
+}
+
 .notification {
-  color: green;
-  background: lightgrey;
-  font-size: 20px;
-  border-style: solid;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 4px 0px;
+  @apply p-4 mb-4 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-avocado-700 dark:text-red-400;
 }
 
-.validate {
-  color: green;
+button {
+  @apply py-2 px-4 me-2 mb-2 text-sm font-medium text-avocado-900 focus:outline-none bg-white rounded-lg border border-avocado-300 hover:bg-avocado-100 hover:text-avocado-700 focus:z-10 focus:ring-4 focus:ring-avocado-100 dark:focus:ring-avocado-700 dark:bg-avocado-700 dark:text-avocado-500 dark:border-avocado-700 dark:hover:text-white dark:hover:bg-avocado-700;
 }
 
-.error {
-  color: red;
+input {
+  @apply bg-avocado-100 border border-avocado-300 text-avocado-900 text-sm rounded-lg focus:ring-avocado-500 focus:border-avocado-500 block w-full p-2.5 dark:bg-avocado-700 dark:border-avocado-500 dark:placeholder-avocado-300 dark:text-white dark:focus:ring-avocado-500 dark:focus:border-avocado-500;
 }
