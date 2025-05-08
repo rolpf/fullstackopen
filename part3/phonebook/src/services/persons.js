@@ -4,7 +4,6 @@ let baseUrl = "";
 
 if (process.env.NODE_ENV == "prod") {
   baseUrl = "/api/persons";
-  console.log("prod env");
 } else {
   baseUrl = "http://localhost:3001/api/persons";
   console.log("dev env");
