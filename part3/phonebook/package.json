@@ -3,10 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://localhost:3001/api/persons",
   "scripts": {
     "start": "vite",
     "dev": "node --watch index.js",
-    "build": "vite build",
+    "build": "vite build --config vite.config.prod.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "json-server -p 3001 db.json",
