@@ -111,25 +111,31 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>Phonebook</h1>
-      <Search
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        persons={persons}
-      />
-      <h2>Add new</h2>
-      <Form
-        addName={addName}
-        nameInput={nameInput}
-        phoneInput={phoneInput}
-        handleNameChange={handleNameChange}
-        handlePhoneChange={handlePhoneChange}
-      />
-      <Notification message={message} />
-      <h2>Numbers</h2>
-      <Persons persons={filteredPersons} removePerson={removePerson} />
-    </div>
+    <>
+      <h1 className="flex justify-center">Phonebook</h1>
+      <div className="md:flex md:justify-center">
+        <div className="md:flex md:flex-col px-12 w-100">
+          <h2>Add new</h2>
+          <Form
+            addName={addName}
+            nameInput={nameInput}
+            phoneInput={phoneInput}
+            handleNameChange={handleNameChange}
+            handlePhoneChange={handlePhoneChange}
+          />
+          <Notification message={message} />
+        </div>
+        <div className="md:flex md:flex-col px-12 w-1s00">
+          <Search
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            persons={persons}
+          />
+          <h2>Numbers</h2>
+          <Persons persons={filteredPersons} removePerson={removePerson} />
+        </div>
+      </div>
+    </>
   );
 };
 
