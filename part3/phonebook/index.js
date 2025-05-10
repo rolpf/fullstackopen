@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express from "express";
 import morgan from "morgan";
 const app = express();
 import cors from "cors";
@@ -85,7 +85,7 @@ app.patch("/api/persons/:id", (request, response, next) => {
 
 app.delete("/api/persons/:id", (request, response) => {
   Person.findByIdAndDelete(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
@@ -104,9 +104,8 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: "malformatted id" });
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message });
-
-    next(error);
   }
+  next(error);
 };
 
 app.use(errorHandler);

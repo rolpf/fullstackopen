@@ -28,7 +28,7 @@ const person = new Person({
   phone: process.argv[3],
 });
 
-if (process.argv.length == 4) {
+if (process.argv.length === 4) {
   person.save().then((result) => {
     console.log(`${result.name} - ${result.phone} was added to the phonebook!`);
     mongoose.connection.close();
