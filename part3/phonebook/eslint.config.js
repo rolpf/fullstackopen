@@ -17,7 +17,7 @@ export default defineConfig([
       },
     },
     languageOptions: {
-      globals: { ...globals.node },
+      globals: { ...globals.node, window: true, document: true },
       ecmaVersion: "latest",
     },
     plugins: {
