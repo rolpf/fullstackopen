@@ -1,4 +1,4 @@
-const Search = ({ searchQuery, setSearchQuery, persons }) => {
+const Search = ({ searchQuery, setSearchQuery }) => {
   return (
     <>
       <h2>Search</h2>

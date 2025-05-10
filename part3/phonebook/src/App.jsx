@@ -126,11 +126,7 @@ const App = () => {
           <Notification message={message} />
         </div>
         <div className="md:flex md:flex-col px-12 w-1s00">
-          <Search
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-            persons={persons}
-          />
+          <Search searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
           <h2>Numbers</h2>
           <Persons persons={filteredPersons} removePerson={removePerson} />
         </div>

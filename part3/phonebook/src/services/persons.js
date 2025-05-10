@@ -2,7 +2,7 @@ import axios from "axios";
 
 let baseUrl = "";
 
-if (process.env.NODE_ENV == "prod") {
+if (process.env.NODE_ENV === "prod") {
   baseUrl = "/api/persons";
 } else {
   baseUrl = "http://localhost:3001/api/persons";
