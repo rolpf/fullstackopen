@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "json-server -p 3001 db.json",
-    "serve": "vite serve dist"
+    "serve": "vite serve dist",
+    "test": "node --test"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.5",
