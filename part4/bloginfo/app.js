@@ -8,7 +8,10 @@ import blogsRouter from "./src/controllers/blogs.js";
 
 const app = express();
 
-const mongoUrl = `mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_HOST}/${config.MONGO_NAME}?retryWrites=true&w=majority&appName=fullstackopen`;
+const mongoUrlProd = `mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_HOST}/${config.MONGO_NAME}?retryWrites=true&w=majority&appName=fullstackopen`;
+const mongoUrlTest = `mongodb+srv://${config.MONGO_USER}:${config.MONGO_PASSWORD}@${config.MONGO_HOST}/${config.MONGO_NAME_TEST}?retryWrites=true&w=majority&appName=fullstackopen`;
+const mongoUrl = config.NODE_ENV === "test" ? mongoUrlTest : mongoUrlProd;
+
 logger.info("connecting to", mongoUrl);
 mongoose
   .connect(mongoUrl)

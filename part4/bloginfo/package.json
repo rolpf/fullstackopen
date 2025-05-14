@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
-    "dev": "node --watch index.js",
+    "start": "NODE_ENV=production vite",
+    "dev": "NODE_ENV=development node --watch index.js",
     "build": "vite build --config vite.config.prod.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "json-server -p 3001 db.json",
-    "serve": "vite serve dist"
+    "serve": "vite serve dist",
+    "test": "NODE_ENV=test node --test"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.5",
@@ -22,6 +23,7 @@
     "morgan": "^1.10.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "supertest": "^7.1.0",
     "tailwindcss": "^4.1.5"
   },
   "devDependencies": {
