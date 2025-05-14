@@ -24,4 +24,30 @@ blogsRouter.post("/", async (request, response, next) => {
   }
 });
 
+blogsRouter.patch("/:id", async (request, response, next) => {
+  const { likes } = request.body;
+
+  Blog.findById(request.params.id).then((blog) => {
+    if (!blog) {
+      return response.status(404).end();
+    }
+    blog.likes = likes;
+
+    return blog
+      .save()
+      .then((updatedBlog) => {
+        response.json(updatedBlog);
+      })
+      .catch((error) => next(error));
+  });
+});
+
+blogsRouter.delete("/:id", async (request, response, next) => {
+  Blog.findByIdAndDelete(request.params.id)
+    .then(() => {
+      response.status(204).end();
+    })
+    .catch((error) => next(error));
+});
+
 export default blogsRouter;
