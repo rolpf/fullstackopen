@@ -1,6 +1,7 @@
 import express from "express";
 const blogsRouter = express.Router();
 import Blog from "../models/blog.js";
+import User from "../models/user.js";
 
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({});
@@ -10,14 +11,22 @@ blogsRouter.get("/", async (request, response) => {
 blogsRouter.post("/", async (request, response, next) => {
   const body = request.body;
 
+  const user = await User.findById(body.userId);
+  if (!user) {
+    return response.status(400).json({ error: "userId missing or not valid" });
+  }
+
   const blog = new Blog({
     title: body.title,
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
+    user: user._id,
   });
   try {
     const savedBlog = await blog.save();
+    user.blogs = user.blogs.concat(savedBlog._id);
+    await user.save();
     response.status(201).json(savedBlog);
   } catch (exception) {
     next(exception);
