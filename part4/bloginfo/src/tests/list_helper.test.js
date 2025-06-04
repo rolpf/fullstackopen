@@ -79,6 +79,7 @@ test("a valid blog can be added", async () => {
     author: "Jose Brevet",
     url: "https://google.com",
     likes: 2,
+    user: "6828c7f24fbb4621198a8f2a",
   };
   await api
     .post("/api/blogs")
@@ -98,6 +99,7 @@ test("blog without title is not added", async () => {
     author: "Jose Brevet",
     url: "https://google.com",
     likes: 2,
+    user: "6828c7f24fbb4621198a8f2a",
   };
   await api.post("/api/blogs").send(newBlog).expect(400);
 
@@ -215,10 +217,6 @@ describe("when there is initially one user in db", () => {
     const usernames = usersAtEnd.map((u) => u.username);
     assert(usernames.includes(newUser.username));
   });
-});
-
-describe("when there is initially one user in db", () => {
-  // ...
 
   test("creation fails with proper statuscode and message if username already taken", async () => {
     const usersAtStart = await helper.usersInDb();

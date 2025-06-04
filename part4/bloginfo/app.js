@@ -6,6 +6,7 @@ import logger from "./src/utils/logger.js";
 import middleware from "./src/utils/middleware.js";
 import blogsRouter from "./src/controllers/blogs.js";
 import usersRouter from "./src/controllers/users.js";
+import loginRouter from "./src/controllers/login.js";
 
 const app = express();
 
@@ -28,7 +29,9 @@ app.use(express.static("dist"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(middleware.requestLogger);
+app.use(middleware.tokenExtractor);
 app.use("/api/blogs", blogsRouter);
+app.use("/api/login", loginRouter);
 app.use("/api/users", usersRouter);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
