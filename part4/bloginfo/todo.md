@@ -1,0 +1,2 @@
+- repair tests with bearer token to add and delete blog (4.23\*)
+- add userExtractor to middleware (4.22\*)
