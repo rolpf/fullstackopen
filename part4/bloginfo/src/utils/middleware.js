@@ -43,6 +43,10 @@ const tokenExtractor = (request, response, next) => {
   next();
 };
 
+// const userExtractor = (request, response, next) => {
+
+// };
+
 export default {
   requestLogger,
   unknownEndpoint,
