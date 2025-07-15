@@ -10,6 +10,14 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState("");
 
+  //console.log("1 " + blogs);
+  useEffect(() => {
+    blogService.getAll().then((response) => {
+      setBlogs(response);
+    });
+  }, []);
+  console.log("2 " + blogs);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
@@ -56,12 +64,6 @@ const App = () => {
   //   </div>;
   // };
 
-  useEffect(() => {
-    blogService.getAll().then((response) => {
-      setBlogs(response.data);
-    });
-  }, []);
-
   // const blogList = () => {
   //   <div>
   //     <h2>blogs</h2>
@@ -82,6 +84,7 @@ const App = () => {
     <div>
       {user ? (
         <div>
+          connected user : {user.username}
           <h2>blogs</h2>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
