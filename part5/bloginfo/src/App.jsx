@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
+import BlogList from "./components/BlogList";
+import LoginForm from "./components/LoginForm";
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -8,7 +12,10 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState("");
+  const [notifications, setNotifications] = useState("");
+  const [writeVisible, setWriteVisible] = useState(false);
+  const hideWhenVisible = { display: writeVisible ? "none" : "" };
+  const showWhenVisible = { display: writeVisible ? "" : "none" };
 
   useEffect(() => {
     blogService.getAll().then((response) => {
@@ -38,95 +45,63 @@ const App = () => {
         password,
       });
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
     } catch (error) {
-      setNotification("wrong credentials");
+      setNotifications({
+        message: "wrong username or password",
+        kind: "error",
+      });
       setTimeout(() => {
-        setNotification(null);
+        setNotifications(null);
       }, 5000);
     }
   };
 
-  // const loginForm = () => {
-  //   <div>
-  //     <h2>Login</h2>
-  //     <form onSubmit={handleLogin}>
-  //       <div>
-  //         username
-  //         <input
-  //           type="text"
-  //           value={username}
-  //           name="Username"
-  //           onChange={({ target }) => setUsername(target.value)}
-  //         />
-  //       </div>
-  //       <div>
-  //         password
-  //         <input
-  //           type="text"
-  //           value={password}
-  //           name="Password"
-  //           onChange={({ target }) => setPassword(target.value)}
-  //         />
-  //       </div>
-  //       <button type="submit">login</button>
-  //     </form>
-  //   </div>;
-  // };
-
-  // const blogList = () => {
-  //   <div>
-  //     <h2>blogs</h2>
-  //     {blogs.map((blog) => (
-  //       <Blog key={blog.id} blog={blog} />
-  //     ))}
-  //   </div>;
-  // };
-
-  // {
-  //   user === null && loginForm();
-  // }
-  // {
-  //   user !== null && blogList();
-  // }
-
   return (
     <div>
+      <h1 className="flex justify-center">My blog</h1>
+      <Notification notification={notifications} />
+      <BlogList blogs={blogs} />
       {user ? (
         <div>
-          connected user : {user.username}
-          <button onClick={logOut}>log out</button>
-          <h2>blogs</h2>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
+          <div className="flex justify-center">
+            connected user : {user.username}
+            <button onClick={logOut}>log out</button>
+          </div>
+          <div className="md:flex md:justify-center">
+            <div style={hideWhenVisible}>
+              <button onClick={() => setWriteVisible(true)}>write blog</button>
+            </div>
+            <div style={showWhenVisible}>
+              <button onClick={() => setWriteVisible(false)}>cancel</button>
+              <BlogForm
+                className="md:flex md:flex-col px-12 w-1s00"
+                showWhenVisible={showWhenVisible}
+                setWriteVisible={setWriteVisible}
+                user={user}
+                notifications={notifications}
+                setNotifications={setNotifications}
+                createBlog={async (blogObject) => {
+                  const returnedBlog = await blogService.create(blogObject);
+                  setBlogs(blogs.concat(returnedBlog));
+                  return returnedBlog;
+                }}
+              />
+            </div>
+          </div>
         </div>
       ) : (
         <div>
-          <h2>Login</h2>
-          <form onSubmit={handleLogin}>
-            <div>
-              username
-              <input
-                type="text"
-                value={username}
-                name="Username"
-                onChange={({ target }) => setUsername(target.value)}
-              />
-            </div>
-            <div>
-              password
-              <input
-                type="text"
-                value={password}
-                name="Password"
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </div>
-            <button type="submit">login</button>
-          </form>
+          <LoginForm
+            handleLogin={handleLogin}
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+          />
         </div>
       )}
     </div>
