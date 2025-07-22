@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import Blog from "./components/Blog";
+import { useState, useEffect, useRef } from "react";
 import BlogForm from "./components/BlogForm";
 import BlogList from "./components/BlogList";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -16,6 +16,7 @@ const App = () => {
   const [writeVisible, setWriteVisible] = useState(false);
   const hideWhenVisible = { display: writeVisible ? "none" : "" };
   const showWhenVisible = { display: writeVisible ? "" : "none" };
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((response) => {
@@ -64,7 +65,6 @@ const App = () => {
     <div>
       <h1 className="flex justify-center">My blog</h1>
       <Notification notification={notifications} />
-      <BlogList blogs={blogs} />
       {user ? (
         <div>
           <div className="flex justify-center">
@@ -72,11 +72,7 @@ const App = () => {
             <button onClick={logOut}>log out</button>
           </div>
           <div className="md:flex md:justify-center">
-            <div style={hideWhenVisible}>
-              <button onClick={() => setWriteVisible(true)}>write blog</button>
-            </div>
-            <div style={showWhenVisible}>
-              <button onClick={() => setWriteVisible(false)}>cancel</button>
+            <Togglable buttonLabel="write blog" ref={blogFormRef}>
               <BlogForm
                 className="md:flex md:flex-col px-12 w-1s00"
                 showWhenVisible={showWhenVisible}
@@ -85,12 +81,14 @@ const App = () => {
                 notifications={notifications}
                 setNotifications={setNotifications}
                 createBlog={async (blogObject) => {
+                  console.log(blogFormRef);
+                  blogFormRef.current.toggleVisiblity();
                   const returnedBlog = await blogService.create(blogObject);
                   setBlogs(blogs.concat(returnedBlog));
                   return returnedBlog;
                 }}
               />
-            </div>
+            </Togglable>
           </div>
         </div>
       ) : (
@@ -104,6 +102,7 @@ const App = () => {
           />
         </div>
       )}
+      <BlogList blogs={blogs} />
     </div>
   );
 };
