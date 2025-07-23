@@ -1,6 +1,6 @@
-import { useState, useImperativeHandle } from "react";
+import { useState, forwardRef, useImperativeHandle } from "react";
 
-const Togglable = (props, ref) => {
+const Togglable = forwardRef((props, refs) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
@@ -10,7 +10,7 @@ const Togglable = (props, ref) => {
     setVisible(!visible);
   };
 
-  useImperativeHandle(ref, () => {
+  useImperativeHandle(refs, () => {
     return {
       toggleVisibility,
     };
@@ -27,6 +27,8 @@ const Togglable = (props, ref) => {
       </div>
     </div>
   );
-};
+});
+
+Togglable.displayName = "Togglable";
 
 export default Togglable;

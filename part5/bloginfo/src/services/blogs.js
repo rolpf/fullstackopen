@@ -29,9 +29,12 @@ const create = async (newObject) => {
   return response.data;
 };
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
-  return request.then((response) => response.data);
+const update = async (updatedBlog) => {
+  const response = await axios.patch(
+    `${baseUrl}/${updatedBlog.id}`,
+    updatedBlog
+  );
+  return response.data;
 };
 
 const remove = async (id) => {

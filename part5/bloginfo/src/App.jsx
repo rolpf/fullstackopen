@@ -14,13 +14,11 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notifications, setNotifications] = useState("");
   const [writeVisible, setWriteVisible] = useState(false);
-  const hideWhenVisible = { display: writeVisible ? "none" : "" };
-  const showWhenVisible = { display: writeVisible ? "" : "none" };
   const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((response) => {
-      setBlogs(response);
+      setBlogs(sortBlogs(response));
     });
   }, []);
 
@@ -61,6 +59,51 @@ const App = () => {
     }
   };
 
+  const deleteBlog = async ({ id, title, author }) => {
+    try {
+      await blogService.remove(id);
+      setBlogs(blogs.filter((blog) => blog.id !== id));
+    } catch (error) {
+      setNotifications({
+        message: "unable to remove blog " + id,
+        kind: "error",
+      });
+      setTimeout(() => {
+        setNotifications(null);
+      }, 5000);
+    }
+  };
+
+  const updateLikes = async (blog) => {
+    const { id, title, author, url, likes } = blog;
+    try {
+      const updatedBlog = await blogService.update({
+        id,
+        title,
+        author,
+        url,
+        likes: likes + 1,
+      });
+      setBlogs(
+        sortBlogs(
+          blogs.map((blog) => (blog.id === updatedBlog.id ? updatedBlog : blog))
+        )
+      );
+    } catch (error) {
+      setNotifications({
+        message: "unable to update blog " + blog.id,
+        kind: "error",
+      });
+      setTimeout(() => {
+        setNotifications(null);
+      }, 5000);
+    }
+  };
+
+  const sortBlogs = (blogs) => {
+    return blogs.sort((a, b) => b.likes - a.likes);
+  };
+
   return (
     <div>
       <h1 className="flex justify-center">My blog</h1>
@@ -75,14 +118,13 @@ const App = () => {
             <Togglable buttonLabel="write blog" ref={blogFormRef}>
               <BlogForm
                 className="md:flex md:flex-col px-12 w-1s00"
-                showWhenVisible={showWhenVisible}
                 setWriteVisible={setWriteVisible}
                 user={user}
                 notifications={notifications}
                 setNotifications={setNotifications}
                 createBlog={async (blogObject) => {
                   console.log(blogFormRef);
-                  blogFormRef.current.toggleVisiblity();
+                  blogFormRef.current.toggleVisibility();
                   const returnedBlog = await blogService.create(blogObject);
                   setBlogs(blogs.concat(returnedBlog));
                   return returnedBlog;
@@ -102,7 +144,11 @@ const App = () => {
           />
         </div>
       )}
-      <BlogList blogs={blogs} />
+      <BlogList
+        blogs={blogs}
+        updateLikes={updateLikes}
+        deleteBlog={deleteBlog}
+      />
     </div>
   );
 };

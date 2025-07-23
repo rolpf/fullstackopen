@@ -5,7 +5,6 @@ const BlogForm = ({
   notifications,
   setNotifications,
   createBlog,
-  showWhenVisible,
   setWriteVisible,
 }) => {
   const [title, setTitle] = useState("");
