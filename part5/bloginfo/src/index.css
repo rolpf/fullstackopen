@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+15&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-jersey: "Jersey 15", "sans-serif";
+
+  --color-pinkish-900: #4c393c;
+  --color-pinkish-700: #7f6065;
+  --color-pinkish-500: #b2868e;
+  --color-pinkish-300: #e5acb6;
+  --color-pinkish-100: #ffc0cb;
+}
+
+body {
+  @apply md:mx-64 font-jersey bg-pinkish-900 text-pinkish-100;
+}
+
+h1 {
+  @apply text-6xl;
+}
+
+h2 {
+  @apply text-4xl;
+}
+
+h3 {
+  @apply text-2xl;
+}
+
+.notification {
+  @apply p-4 mb-4 text-sm text-red-700 rounded-lg bg-red-50 dark:bg-pinkish-700 dark:text-red-400;
+}
+
+button {
+  @apply py-2 px-4 me-2 mb-2 text-sm font-medium text-pinkish-900 focus:outline-none bg-white rounded-lg border border-pinkish-300 hover:bg-pinkish-100 hover:text-pinkish-700 focus:z-10 focus:ring-4 focus:ring-pinkish-100 dark:focus:ring-pinkish-700 dark:bg-pinkish-700 dark:text-pinkish-500 dark:border-pinkish-700 dark:hover:text-white dark:hover:bg-pinkish-700;
+}
+
+input {
+  @apply bg-pinkish-100 border border-pinkish-300 text-pinkish-900 text-sm rounded-lg focus:ring-pinkish-500 focus:border-pinkish-500 block w-full p-2.5 dark:bg-pinkish-700 dark:border-pinkish-500 dark:placeholder-pinkish-300 dark:text-white dark:focus:ring-pinkish-500 dark:focus:border-pinkish-500;
+}
