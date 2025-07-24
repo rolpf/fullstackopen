@@ -1,6 +1,7 @@
 import Togglable from "./Togglable";
 
-const Blog = ({ blog, updateLikes, deleteBlog }) => {
+const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
+  console.log(blog.user.id);
   return (
     <div>
       <h3>{blog.title}</h3> by {blog.author}
@@ -9,7 +10,18 @@ const Blog = ({ blog, updateLikes, deleteBlog }) => {
         <button id="likes-button" onClick={() => updateLikes(blog)}>
           like
         </button>
-        <button id="delete-button" onClick={() => deleteBlog(blog)}>
+        <button
+          id="delete-button"
+          onClick={() => {
+            if (
+              window.confirm(
+                "are you sure you want to delete " + blog.title + " ?"
+              )
+            ) {
+              deleteBlog(blog);
+            }
+          }}
+        >
           delete
         </button>
       </Togglable>
