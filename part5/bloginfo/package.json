@@ -13,7 +13,7 @@
     "serve": "vite serve dist",
     "test": "NODE_ENV=test node --test",
     "cypress:open": "cypress open",
-    "start:test": "NODE_ENV=test node index.js"
+    "dev:test": "NODE_ENV=test node --watch index.js"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
@@ -21,6 +21,7 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "cypress": "^14.5.3",
+    "eslint-plugin-cypress": "^5.1.0",
     "express": "^5.1.0",
     "json-server": "^1.0.0-beta.3",
     "jsonwebtoken": "^9.0.2",
