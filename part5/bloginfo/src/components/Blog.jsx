@@ -3,7 +3,7 @@ import Togglable from "./Togglable";
 const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   console.log(blog.user.id);
   return (
-    <div>
+    <div className="blog">
       <h3>{blog.title}</h3> by {blog.author}
       <Togglable buttonLabel="view">
         {blog.likes} likes
