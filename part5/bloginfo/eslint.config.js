@@ -4,10 +4,12 @@ import { defineConfig } from "eslint/config";
 import js from "@eslint/js";
 import stylisticJs from "@stylistic/eslint-plugin-js";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
+import pluginCypress from "eslint-plugin-cypress";
 
 export default defineConfig([
   js.configs.recommended,
   pluginReact.configs.flat.recommended,
+  pluginCypress.configs.recommended,
 
   {
     files: ["**/*.{js,jsx}"],
@@ -22,6 +24,7 @@ export default defineConfig([
     },
     plugins: {
       "@stylistic/js": stylisticJs,
+      cypress: pluginCypress,
     },
     rules: {
       eqeqeq: "error",
@@ -35,6 +38,8 @@ export default defineConfig([
       "@stylistic/js/linebreak-style": ["error", "unix"],
       "@stylistic/js/quotes": ["error", "single"],
       "@stylistic/js/semi": ["error", "never"],
+      "cypress/unsafe-to-chain-command": "error",
+      "cypress/no-unnecessary-waiting": "off",
     },
   },
   {
