@@ -17,7 +17,21 @@ const asObject = (anecdote) => {
   };
 };
 
-const initialState = anecdotesAtStart.map(asObject);
+let sortedAnecdotes = [...anecdotesAtStart];
+
+const sortArray = (a, b) => {
+  if (a.votes > b.votes) {
+    return -1;
+  }
+  if (a.votes < b.votes) {
+    return 1;
+  } else {
+    return 0;
+  }
+};
+sortedAnecdotes.sort(sortArray);
+
+const initialState = sortedAnecdotes.map(asObject);
 
 export const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -30,9 +44,9 @@ export const anecdoteReducer = (state = initialState, action) => {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1,
       };
-      return state.map((anecdote) =>
-        anecdote.id !== id ? anecdote : changedAnecdote,
-      );
+      return state
+        .map((anecdote) => (anecdote.id !== id ? anecdote : changedAnecdote))
+        .sort(sortArray);
     }
     default:
       return state;
