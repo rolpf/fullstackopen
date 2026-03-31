@@ -1,11 +1,10 @@
-import { anecdoteReducer, addVote } from "./reducers/anecdoteReducer.js";
+import { addVote } from "./reducers/anecdoteReducer.js";
+import generateId from "./utils/utils.js";
 import { useSelector, useDispatch } from "react-redux";
 
 const App = () => {
   const dispatch = useDispatch();
   const anecdotes = useSelector((state) => state);
-
-  const generateId = () => Number((Math.random() * 1000000).toFixed(0));
 
   const vote = (id) => {
     dispatch(addVote(id));
