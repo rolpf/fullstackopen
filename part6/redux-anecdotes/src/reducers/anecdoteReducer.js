@@ -21,10 +21,11 @@ const initialState = anecdotesAtStart.map(asObject);
 
 export const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "NEW_ANECDOTE":
+      return state.concat(action.payload);
     case "VOTE": {
       const id = action.payload.id;
       const anecdoteToChange = state.find((n) => n.id === id);
-      console.log(anecdoteToChange);
       const changedAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1,
