@@ -1,4 +1,4 @@
-import generateId from "./utils/utils.js";
+import generateId from "../utils/utils.js";
 
 const anecdotesAtStart = [
   "If it hurts, do it more often",
