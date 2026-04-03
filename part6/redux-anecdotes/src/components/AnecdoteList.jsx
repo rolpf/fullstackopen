@@ -7,9 +7,9 @@ const AnecdoteList = () => {
     if (filter === "ALL") {
       return anecdotes;
     }
-    return filter === "IMPORTANT"
-      ? anecdotes.filter((anecdote) => anecdote.important)
-      : anecdotes.filter((anecdote) => !anecdote.important);
+    return filter
+      ? anecdotes.filter((anecdote) => anecdote.content.includes(filter))
+      : anecdotes;
   });
 
   const vote = (id) => {
