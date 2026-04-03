@@ -3,7 +3,14 @@ import { addVote } from "../reducers/anecdoteReducer.js";
 
 const AnecdoteList = () => {
   const dispatch = useDispatch();
-  const anecdotes = useSelector((state) => state);
+  const anecdotes = useSelector(({ filter, anecdotes }) => {
+    if (filter === "ALL") {
+      return anecdotes;
+    }
+    return filter === "IMPORTANT"
+      ? anecdotes.filter((anecdote) => anecdote.important)
+      : anecdotes.filter((anecdote) => !anecdote.important);
+  });
 
   const vote = (id) => {
     dispatch(addVote(id));
