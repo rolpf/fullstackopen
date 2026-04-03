@@ -1,49 +1,15 @@
-import { addVote } from "./reducers/anecdoteReducer.js";
-import generateId from "./utils/utils.js";
-import { useSelector, useDispatch } from "react-redux";
+import AnecdoteForm from "./components/AnecdoteForm.jsx";
+import AnecdoteList from "./components/AnecdoteList.jsx";
+import Filter from "./components/Filter.jsx";
 
 const App = () => {
-  const dispatch = useDispatch();
-  const anecdotes = useSelector((state) => state);
-
-  const vote = (id) => {
-    dispatch(addVote(id));
-    console.log("vote", id);
-  };
-
-  const addAnecdote = (event) => {
-    event.preventDefault();
-    const content = event.target.anecdote.value;
-    event.target.anecdote.value = "";
-    dispatch({
-      type: "NEW_ANECDOTE",
-      payload: {
-        content,
-        id: generateId(),
-        votes: 0,
-      },
-    });
-  };
-
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
-      ))}
+      <AnecdoteList />
+      <Filter />
       <h2>add a new anecdote</h2>
-      <form onSubmit={addAnecdote}>
-        <div>
-          <input name="anecdote" />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      <AnecdoteForm />
     </div>
   );
 };
