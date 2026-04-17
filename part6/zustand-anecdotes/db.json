@@ -33,12 +33,17 @@
     {
       "content": "This is a new anecdote",
       "id": "RniNA3fAfXk",
-      "votes": 0
+      "votes": 6
     },
     {
       "content": "New anecdote",
       "id": "F6_8iCShyJU",
-      "votes": 0
+      "votes": 1
+    },
+    {
+      "content": "new anecdote",
+      "id": "1TbgpFFyFd4",
+      "votes": 1
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
