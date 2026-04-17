@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import anecdoteService from "./services/anecdotes";
+import anecdoteService from "../services/anecdotes";
 
 const useAnecdoteStore = create((set, get) => ({
   anecdotes: [],
